@@ -1,0 +1,13 @@
+body{
+    background-color: skyblue;
+    display: flex;
+}
+
+div{
+    display: flex;
+    justify-content: center;
+}
+
+#canvas{
+    border: 1px solid black;
+}
