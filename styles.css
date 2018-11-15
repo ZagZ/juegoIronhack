@@ -1,8 +1,14 @@
 
+body{
+    font-family: 'VT323', monospace;
+}
+
 div{
     justify-content: center;
 }
 
 #canvas{
     border: 1px solid black;
+    font-family: 'VT323', monospace;
+    color: blue;
 }
