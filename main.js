@@ -1,16 +1,16 @@
 
-//CANVAS
+//---------------------CANVAS
 var canvas = document.getElementById("canvas")
 var ctx = canvas.getContext("2d")
 
-//VARIABLES
+//---------------------VARIABLES
 
 var interval
 var frames = 0
 var cuadrosPS = 0
 var images = {
-    bg: "./images/50d.jpg",
-    tower: "./images/_D.png",
+    bg: "./images/backgroundBlueRare.png",
+    tower: "./images/towerRedRare2.png",
     dragonRojoRight: "./images/dragon-sprite(rojoBase).png",
     dragonRojoLeft: "./images/dragon-sprite(soloBaseLeft).png",
     dragonAzulRight: "./images/dragon-sprite(blueBase).png",
@@ -23,6 +23,9 @@ var images = {
     flame2: "./images/flame2.png",
     flame3: "./images/flame3.png",
     spaceFlame: "./images/space-flame.png",
+    caratula: "./images/caratula.png",
+    controls: "./images/controls.png",
+    fondowhine: "./images/fondowhine.png",
 }
 var friction = 0.98
 var gravity = 8
@@ -40,172 +43,7 @@ var score2 = 0
 var damage1 = 3
 var damage2 = 3
 
-//CLASES
-
-
-
-//INSTANCIAS
-
-//MAIN FUNCTIONS
-
-function start() {
-    frames = 0
-    interval = setInterval(update, 1000 / 75)
-
-}
-
-function update() {
-
-    frames++
-    cuadrosPS++
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    board.draw()
-    tower.draw()
-    drawCoins(frames, cuadrosPS)
-    drawBullet(frames)
-    player1.draw()
-    player2.draw()
-    nubes.draw()
-    lifePlayer1.draw()
-    lifePlayer2.draw()
-    ctx.font = "bold 100px VT323"
-    ctx.fillStyle = 'rgb(18, 35, 196)'
-    ctx.fillText("SCORE: " + score1, 100, 150)
-    ctx.fillStyle = '#bc3925'
-    ctx.fillText("SCORE: " + score2, 800, 150)
-
-    ctx.font = "bolder 50px VT323"
-    ctx.fillStyle = '#5c6cff'
-    ctx.fillText("life: ", 100, 200)
-    ctx.fillStyle = '#db5e39'
-    ctx.fillText("life: ", 800, 200)
-
-    movementCharacter()
-    gettingCoinPlayer1()
-    gettingCoinPlayer2()
-    smashedPlayer1()
-    smashedPlayer2()
-
-}
-
-function gameOver() {
-    clearInterval(interval)
-    interval = null
-
-    ctx.font = "bolder 300px VT323"
-    ctx.fillStyle = "#a0d100"
-    ctx.fillText("GAME OVER", canvas.width / 2 - 550, canvas.height / 2)
-
-    if (damage1 === 0 || score1 < score2) {
-        console.log("jugador 2 gana")
-    } else if (damage2 === 0 || score1 > score2) {
-        console.log("jugador 1 gana")
-    }
-
-    ctx.fillStyle = "black"
-    ctx.font = "bold 40px VT323"
-    ctx.fillText("Tu score: " + Math.floor(frames / 60), canvas.width / 2 + 200, canvas.height / 2 + 300)
-    ctx.font = "bold 20px VT323"
-    ctx.fillText("Presiona 'Return' para reiniciar", canvas.width / 2 + 250, canvas.height / 2 + 350)
-}
-
-//AUX FUNCTIONX
-
-//LISTENERS
-
-//TESTERS
-
-function movementCharacter() {
-
-    if (keys[39]) {
-
-        if (player1.velX < player1.speed) {
-            player1.velX++
-        }
-
-        player1.velX *= friction
-        player1.x += player1.velX
-
-        if (player1.x >= canvas.width - player1.width) {
-            player1.x = canvas.width - player1.width
-        }
-        player1.image.src = images.dragonAzulRight
-
-
-    }
-    if (keys[37]) {
-
-        if (player1.velX > player1.speed) {
-            player1.velX--
-        }
-
-        player1.velX *= friction;
-        player1.x -= player1.velX;
-
-        if (player1.x <= 0) {
-            player1.x = 0
-        }
-        player1.image.src = images.dragonAzulLeft
-
-    }
-    if (keys[38]) {
-
-        player1.y -= 20
-        if (player1.y <= 0) {
-            player1.y = 0
-        }
-
-
-
-    }
-    if (keys[68]) {
-
-        if (player2.velX < player2.speed) {
-            player2.velX++
-        }
-
-        player2.velX *= friction
-        player2.x += player2.velX
-
-        if (player2.x >= canvas.width - player2.width) {
-            player2.x = canvas.width - player2.width
-        }
-        player2.image.src = images.dragonRojoRight
-
-    }
-    if (keys[65]) {
-
-        if (player2.velX > player2.speed) {
-            player2.velX--
-        }
-
-        player2.velX *= friction;
-        player2.x -= player2.velX;
-
-        if (player2.x <= 0) {
-            player2.x = 0
-        }
-        player2.image.src = images.dragonRojoLeft
-
-    }
-    if (keys[87]) {
-
-        player2.y -= 20
-        if (player2.y <= 0) {
-            player2.y = 0
-
-        }
-
-    }
-}
-
-document.body.addEventListener("keydown", function (e) {
-    keys[e.keyCode] = true;
-});
-document.body.addEventListener("keyup", function (e) {
-    keys[e.keyCode] = false;
-});
+//-----------------------CLASES
 
 
 function Board() {
@@ -222,9 +60,9 @@ function Board() {
 }
 
 function Tower() {
-    this.x = 0
+    this.x = 150
     this.y = 0
-    this.width = canvas.width
+    this.width = 900
     this.height = canvas.height
     this.image = new Image()
     this.image.src = images.tower
@@ -253,115 +91,9 @@ function Nubes() {
     }
 }
 
-//COINS//
-
-function Coins(coinX) {
-
-    this.x = coinX
-    this.y = -100
-    this.width = 80
-    this.height = 80
-    this.image = new Image()
-    this.image.src = coins.frontCoin
-    this.image2 = new Image()
-    this.image2.src = coins.coin2fase
-    this.image3 = new Image()
-    this.image3.src = coins.coin3fase
-    this.image4 = new Image()
-    this.image4.src = coins.coin4fase
-    this.activeImage = 1
-    this.drawedImage = this.image
-
-    this.changeImage = function () {
-        if (this.activeImage === 1) {
-            this.drawedImage = this.image2
-            this.activeImage = 2
-        } else
-            if (this.activeImage === 2) {
-                this.drawedImage = this.image
-                this.activeImage = 3
-            } else
-                if (this.activeImage === 3) {
-                    this.drawedImage = this.image3
-                    this.activeImage = 4
-                }
-                else
-                    if (this.activeImage === 4) {
-                        this.drawedImage = this.image4
-                        this.activeImage = 1
-                    }
-    }
-
-    this.draw = function () {
-        if (frames % 11 === 0)
-            this.changeImage()
-        this.y += gravity / 3
-        ctx.drawImage(this.drawedImage, this.x, this.y, this.width, this.height)
-
-    }
-
-}
-
-function generateCoins(frames, cuadrosPS) {
-
-    if (frames % 150 === 0) {
-        var coinX = Math.floor(Math.random() * canvas.width - 100)
-        if (coinX > board.x + 20) {
-            generatedCoins.push(new Coins(coinX, cuadrosPS))
-            if (generatedCoins.length > 50) generatedCoins.shift()
-        }
-    }
-}
-
-function drawCoins(frames, cuadrosPS) {
-
-    generateCoins(frames, cuadrosPS)
-    generatedCoins.forEach(function (coins) {
-        coins.draw()
-    })
-}
-
-//BULLETS//
-
-function Bullets(bulletX) {
-
-    this.x = bulletX
-    this.y = canvas.height + 200
-    this.width = 90
-    this.height = 90
-    this.image = new Image()
-    this.image.src = images.bulletUp
-
-    this.draw = function () {
-        this.y -= gravity / 1.5
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
-    }
-
-}
-
-function generateBullet(frames) {
-
-    if (frames % 400 === 0) {
-        var bulletX = Math.floor(Math.random() * canvas.width - 100)
-        if (bulletX > board.x) {
-            generatedBulletsUp.push(new Bullets(bulletX))
-            if (generatedBulletsUp.length > 20) generatedBulletsUp.shift()
-        }
-    }
-}
-
-function drawBullet(frames) {
-
-    generateBullet(frames)
-    generatedBulletsUp.forEach(function (bullet) {
-        bullet.draw()
-    })
-}
-
 
 
 //PLAYERS//
-
 
 
 function Player() {
@@ -497,7 +229,7 @@ function smashedPlayer2() {
     }
 }
 
-//LA VIDITA
+//LA VIDITA//
 
 function lifePlayer() {
     this.x = 230
@@ -527,6 +259,8 @@ function lifePlayer2() {
 
 }
 
+//-----------------INSTANCIAS
+
 var board = new Board()
 var tower = new Tower()
 var nubes = new Nubes()
@@ -536,7 +270,318 @@ var player1 = new Player()
 var player2 = new Player2()
 
 
-start()
+//-------------------MAIN FUNCTIONS
 
-//TEXTO
+function start() {
+    interval = null
+    frames = 0
+    interval = setInterval(update, 1000 / 75)
+
+}
+
+function update() {
+
+    frames++
+    cuadrosPS++
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    board.draw()
+    tower.draw()
+    drawCoins(frames, cuadrosPS)
+    drawBullet(frames)
+    player1.draw()
+    player2.draw()
+    nubes.draw()
+    lifePlayer1.draw()
+    lifePlayer2.draw()
+    ctx.font = "bold 100px VT323"
+    ctx.fillStyle = 'rgb(18, 35, 196)'
+    ctx.fillText("SCORE: " + score1, 100, 150)
+    ctx.fillStyle = '#bc3925'
+    ctx.fillText("SCORE: " + score2, 800, 150)
+
+    ctx.font = "bolder 50px VT323"
+    ctx.fillStyle = '#5c6cff'
+    ctx.fillText("life: ", 100, 200)
+    ctx.fillStyle = '#db5e39'
+    ctx.fillText("life: ", 800, 200)
+
+    movementCharacter()
+    gettingCoinPlayer1()
+    gettingCoinPlayer2()
+    smashedPlayer1()
+    smashedPlayer2()
+
+}
+
+function gameOver() {
+    clearInterval(interval)
+    interval = null
+
+    ctx.font = "bolder 300px VT323"
+    ctx.fillStyle = "#a0d100"
+    ctx.fillText("GAME OVER", canvas.width / 2 - 550, canvas.height / 2)
+    ctx.font = "bold 80px VT323"
+    ctx.fillStyle = "white"
+    ctx.fillText("Presiona 'ENTER' para reiniciar",100,800)
+
+    if (damage1 === 0) {
+        console.log("jugador 2 gana")
+
+        ctx.fillStyle = "white"
+        ctx.font = "bold 100px VT323"
+        ctx.fillText("JUGADOR 2 GANA", 350,600)
+
+    } else if (damage2 === 0) {
+        console.log("jugador 1 gana")
+
+        ctx.fillStyle = "white"
+        ctx.font = "bold 40px VT323"
+        ctx.fillText("JUGADOR 1 GANA", 500,600)
+
+    } else if (score1 < score2) {
+        console.log("jugador 2 gana")
+
+        ctx.fillStyle = "white"
+        ctx.font = "bold 40px VT323"
+        ctx.fillText("JUGADOR 2 GANA", 500,600)
+
+    } else if (score1 > score2) {
+        console.log("jugador 1 gana")
+
+        ctx.fillStyle = "white"
+        ctx.font = "bold 40px VT323"
+        ctx.fillText("JUGADOR 1 GANA", 500,600)
+    }
+
+
+}
+
+//-----------------AUX FUNCTION
+
+
+
+//COINS//
+
+function Coins(coinX) {
+
+    this.x = coinX
+    this.y = -100
+    this.width = 80
+    this.height = 80
+    this.image = new Image()
+    this.image.src = coins.frontCoin
+    this.image2 = new Image()
+    this.image2.src = coins.coin2fase
+    this.image3 = new Image()
+    this.image3.src = coins.coin3fase
+    this.image4 = new Image()
+    this.image4.src = coins.coin4fase
+    this.activeImage = 1
+    this.drawedImage = this.image
+
+    this.changeImage = function () {
+        if (this.activeImage === 1) {
+            this.drawedImage = this.image2
+            this.activeImage = 2
+        } else
+            if (this.activeImage === 2) {
+                this.drawedImage = this.image
+                this.activeImage = 3
+            } else
+                if (this.activeImage === 3) {
+                    this.drawedImage = this.image3
+                    this.activeImage = 4
+                }
+                else
+                    if (this.activeImage === 4) {
+                        this.drawedImage = this.image4
+                        this.activeImage = 1
+                    }
+    }
+
+    this.draw = function () {
+        if (frames % 11 === 0)
+            this.changeImage()
+        this.y += gravity / 3
+        ctx.drawImage(this.drawedImage, this.x, this.y, this.width, this.height)
+
+    }
+
+}
+
+function generateCoins(frames, cuadrosPS) {
+
+    if (frames % 70 === 0) {
+        var coinX = Math.floor(Math.random() * canvas.width - 100)
+        if (coinX > board.x + 20) {
+            generatedCoins.push(new Coins(coinX, cuadrosPS))
+            if (generatedCoins.length > 50) generatedCoins.shift()
+        }
+    }
+}
+
+function drawCoins(frames, cuadrosPS) {
+
+    generateCoins(frames, cuadrosPS)
+    generatedCoins.forEach(function (coins) {
+        coins.draw()
+    })
+}
+
+//BULLETS//
+
+function Bullets(bulletX) {
+
+    this.x = bulletX
+    this.y = canvas.height + 200
+    this.width = 90
+    this.height = 90
+    this.image = new Image()
+    this.image.src = images.bulletUp
+
+    this.draw = function () {
+        this.y -= gravity / 1.5
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+    }
+
+}
+
+function generateBullet(frames) {
+
+    if (frames % 150 === 0) {
+        var bulletX = Math.floor(Math.random() * canvas.width - 100)
+        if (bulletX > board.x) {
+            generatedBulletsUp.push(new Bullets(bulletX))
+            if (generatedBulletsUp.length > 20) generatedBulletsUp.shift()
+        }
+    }
+}
+
+function drawBullet(frames) {
+
+    generateBullet(frames)
+    generatedBulletsUp.forEach(function (bullet) {
+        bullet.draw()
+    })
+}
+
+function drawCover() {
+
+    var img = new Image()
+    img.src = images.caratula
+    var img2 = new Image()
+    img2.src = images.fondowhine
+    img.onload = function () {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+        ctx.drawImage(img2, 70, 600, 1120, 100)
+        ctx.font = "bold 70px VT323"
+        ctx.fillStyle = 'goldenrod'
+        ctx.fillText("Presiona la tecla 'ENTER' para comenzar", 75, 670)
+
+    }
+}
+
+//-------------LISTENERS
+
+
+function movementCharacter() {
+
+    if (keys[39]) {
+
+        if (player1.velX < player1.speed) {
+            player1.velX++
+        }
+
+        player1.velX *= friction
+        player1.x += player1.velX
+
+        if (player1.x >= canvas.width - player1.width) {
+            player1.x = canvas.width - player1.width
+        }
+        player1.image.src = images.dragonAzulRight
+
+
+    }
+    if (keys[37]) {
+
+        if (player1.velX > player1.speed) {
+            player1.velX--
+        }
+
+        player1.velX *= friction;
+        player1.x -= player1.velX;
+
+        if (player1.x <= 0) {
+            player1.x = 0
+        }
+        player1.image.src = images.dragonAzulLeft
+
+    }
+    if (keys[38]) {
+
+        player1.y -= 20
+        if (player1.y <= 0) {
+            player1.y = 0
+        }
+
+
+
+    }
+    if (keys[68]) {
+
+        if (player2.velX < player2.speed) {
+            player2.velX++
+        }
+
+        player2.velX *= friction
+        player2.x += player2.velX
+
+        if (player2.x >= canvas.width - player2.width) {
+            player2.x = canvas.width - player2.width
+        }
+        player2.image.src = images.dragonRojoRight
+
+    }
+    if (keys[65]) {
+
+        if (player2.velX > player2.speed) {
+            player2.velX--
+        }
+
+        player2.velX *= friction;
+        player2.x -= player2.velX;
+
+        if (player2.x <= 0) {
+            player2.x = 0
+        }
+        player2.image.src = images.dragonRojoLeft
+
+    }
+    if (keys[87]) {
+
+        player2.y -= 20
+        if (player2.y <= 0) {
+            player2.y = 0
+
+        }
+
+    }
+}
+
+document.body.addEventListener("keydown", function (e) {
+    keys[e.keyCode] = true;
+});
+document.body.addEventListener("keyup", function (e) {
+    keys[e.keyCode] = false;
+});
+
+document.body.addEventListener("keyup", function (e) {
+    if (e.keyCode == 13) start()
+})
+
+
+//TESTERS
+
+drawCover()
 
