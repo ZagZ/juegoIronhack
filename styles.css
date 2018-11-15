@@ -1,6 +1,9 @@
 
 body{
     font-family: 'VT323', monospace;
+    background-image: url("./images/background2.png");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 div{
@@ -10,5 +13,6 @@ div{
 #canvas{
     border: 1px solid black;
     font-family: 'VT323', monospace;
+    margin-left: 20%;
     
 }
