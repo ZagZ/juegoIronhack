@@ -50,6 +50,9 @@ fondoSound.src = "./sounds/game-of-thrones-8-bit.mp3"
 var canyon = document.createElement('audio')
 canyon.src = "./sounds/sonido-canon-02 (1).mp3"
 
+var ending = document.createElement('audio')
+ending.src = "./sounds/ending.mp3"
+
 var arrayPlayers = []
 var selectPlayers
 
@@ -691,6 +694,11 @@ document.body.addEventListener("keyup", function (e) {
     keys[e.keyCode] = false;
 });
 
+document.body.addEventListener("keyup", function (e) {
+    if(e.keyCode === 79)ending.play()
+});
+
+
 
 document.body.addEventListener("keyup", function (e) {
     if (e.keyCode === 13) {
@@ -714,11 +722,24 @@ document.body.addEventListener("keyup", function (e) {
 document.getElementById("jugador1").addEventListener("click", function () {
     arrayPlayers.push(1)
     selectPlayers = arrayPlayers[arrayPlayers.length - 1]
+    if(selectPlayers===1){
+    var boton1 = document.getElementById("jugador1")
+    var boton2 = document.getElementById("jugador2")
+    boton1.className = "botonesSelected"
+    boton2.className = "botones"
+}
+
 })
 
 document.getElementById("jugador2").addEventListener("click", function () {
     arrayPlayers.push(2)
     selectPlayers = arrayPlayers[arrayPlayers.length - 1]
+    if(selectPlayers===2){
+        var boton1 = document.getElementById("jugador1")
+        var boton2 = document.getElementById("jugador2")
+        boton1.className = "botones"
+        boton2.className = "botonesSelected"
+    }
 })
 
 

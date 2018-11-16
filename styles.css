@@ -48,7 +48,7 @@ div{
     font-family: 'VT323', monospace;
     margin-left: 18%;
     display: none;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 .botones{
@@ -63,6 +63,19 @@ div{
     margin: 25px 20px 25px 50px;
 }
 
+.botonesSelected{
+    text-decoration: none;
+    padding: 20px;
+    font-family: VT323;
+    font-size: 0.7em;
+    background-color: goldenrod;
+    color: whitesmoke;
+    border: 0px;
+    border-radius: 10px;
+    margin: 25px 20px 25px 50px;
+}
+
+
 #startGamebutton{
     text-decoration: none;
     padding: 20px;
@@ -74,4 +87,13 @@ div{
     border-radius: 10px;
     margin: 25px 20px 25px 50px;
     width: 400px;
+}
+
+footer{
+color: whitesmoke;
+position: absolute;
+bottom: 10px;
+right: 10px;
+font-size: 1.5em;
+text-align: center;
 }
