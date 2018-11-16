@@ -189,7 +189,7 @@ function gettingCoinPlayer1() {
         if (player1.isGetting(coin)) {
             generatedCoins.splice(generatedCoins.indexOf(coin), 1)
             score1++
-            setInterval(monedita.play(), 100 / 120)
+            monedita.play()
         }
     }
 }
