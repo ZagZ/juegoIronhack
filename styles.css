@@ -6,6 +6,39 @@ body{
     background-size: cover;
 }
 
+#titulo{
+    margin: auto;
+    display: block;
+}
+
+#instrucciones{
+    color: whitesmoke;
+    width: 40%;
+    float: left;
+    padding-left: 200px;
+    font-size: 2.5em;
+}
+
+#instrucciones img{
+    width: 70%;
+}
+
+#secondPlayer{
+    color: whitesmoke;
+    width: 40%;
+    float: left;
+    font-size: 2.5em;
+}
+
+#secondPlayer img{
+    width: 70%;
+}
+
+#secondPlayer span{
+    font-size: 1.2em;
+    color: yellow;
+}
+
 div{
     justify-content: center;
 }
@@ -13,6 +46,32 @@ div{
 #canvas{
     border: 1px solid black;
     font-family: 'VT323', monospace;
-    margin-left: 20%;
-    
+    margin-left: 18%;
+    display: none;
+    margin-top: 30px;
+}
+
+.botones{
+    text-decoration: none;
+    padding: 20px;
+    font-family: VT323;
+    font-size: 0.7em;
+    background-color: rgb(0, 59, 155);
+    color: whitesmoke;
+    border: 0px;
+    border-radius: 10px;
+    margin: 25px 20px 25px 50px;
+}
+
+#startGamebutton{
+    text-decoration: none;
+    padding: 20px;
+    font-family: VT323;
+    font-size: 0.7em;
+    background-color: #bc3925;
+    color: whitesmoke;
+    border: 0px;
+    border-radius: 10px;
+    margin: 25px 20px 25px 50px;
+    width: 400px;
 }

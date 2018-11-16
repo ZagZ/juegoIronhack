@@ -1,5 +1,6 @@
 
 //---------------------CANVAS
+
 var canvas = document.getElementById("canvas")
 var ctx = canvas.getContext("2d")
 
@@ -17,8 +18,7 @@ var images = {
     dragonAzulLeft: "./images/dragon-sprite(blueBaseLeft).png",
     nubes: "./images/nubes.png",
     tester: "./images/dragon-sprite-fly.png",
-    bulletUp: "./images/bulletUp.png",
-    bulletDown: "./images/bulletDown.png",
+    bulletUp: "./images/Cannon_Ball.png",
     flame: "./images/flame.png",
     flame2: "./images/flame2.png",
     flame3: "./images/flame3.png",
@@ -42,6 +42,16 @@ var score1 = 0
 var score2 = 0
 var damage1 = 3
 var damage2 = 3
+var enter = 0
+var monedita = document.createElement('audio')
+monedita.src = "./sounds/super-mario-bros-coin-sound-effect.mp3"
+var fondoSound = document.createElement('audio')
+fondoSound.src = "./sounds/game-of-thrones-8-bit.mp3"
+var canyon = document.createElement('audio')
+canyon.src = "./sounds/sonido-canon-02 (1).mp3"
+
+var arrayPlayers = []
+var selectPlayers
 
 //-----------------------CLASES
 
@@ -176,6 +186,7 @@ function gettingCoinPlayer1() {
         if (player1.isGetting(coin)) {
             generatedCoins.splice(generatedCoins.indexOf(coin), 1)
             score1++
+            setInterval(monedita.play(), 100 / 120)
         }
     }
 }
@@ -185,6 +196,7 @@ function gettingCoinPlayer2() {
         if (player2.isGetting(coin)) {
             generatedCoins.splice(generatedCoins.indexOf(coin), 1)
             score2++
+            monedita.play()
         }
     }
 }
@@ -194,7 +206,10 @@ function smashedPlayer1() {
         if (player1.isSmashed(bullet)) {
             generatedBulletsUp.splice(generatedBulletsUp.indexOf(bullet), 1)
             damage1--
-            if (damage1 === 2) {
+            if (damage1 === 3) {
+                lifePlayer1.width = 120
+                lifePlayer1.image.src = images.flame3
+            } else if (damage1 === 2) {
                 lifePlayer1.width = 80
                 lifePlayer1.image.src = images.flame2
             } else if (damage1 === 1) {
@@ -203,7 +218,14 @@ function smashedPlayer1() {
 
             } else if (damage1 === 0) {
                 lifePlayer1.image.src = images.spaceFlame
-                setTimeout(function () { gameOver(); }, 500);
+                if (selectPlayers === 1) {
+       
+                    setTimeout(function () { gameOver1(); }, 500);
+                } else if (selectPlayers === 2) {
+        
+                    setTimeout(function () { gameOver(); }, 500);
+                }
+
             }
         }
     }
@@ -214,14 +236,17 @@ function smashedPlayer2() {
         if (player2.isSmashed(bullet)) {
             generatedBulletsUp.splice(generatedBulletsUp.indexOf(bullet), 1)
             damage2--
-            if (damage2 == 2) {
+            if (damage2 === 3) {
+                lifePlayer2.width = 120
+                lifePlayer2.image.src = images.flame3
+            } else if (damage2 === 2) {
                 lifePlayer2.width = 80
                 lifePlayer2.image.src = images.flame2
-            } else if (damage2 == 1) {
+            } else if (damage2 === 1) {
                 lifePlayer2.width = 40
                 lifePlayer2.image.src = images.flame
 
-            } else if (damage2 == 0) {
+            } else if (damage2 === 0) {
                 lifePlayer2.image.src = images.spaceFlame
                 setTimeout(function () { gameOver(); }, 500);
             }
@@ -273,17 +298,85 @@ var player2 = new Player2()
 //-------------------MAIN FUNCTIONS
 
 function start() {
-    interval = null
-    frames = 0
-    interval = setInterval(update, 1000 / 75)
 
+    if (selectPlayers === 1) {
+    
+        frames = 0
+        cuadrosPS = 0
+
+        keys = []
+        generatedCoins = []
+        generatedBulletsUp = []
+        score1 = 0
+        score2 = 0
+        damage1 = 3
+        damage2 = 3
+        enter = 0
+
+        lifePlayer1.image.src = images.flame3
+        lifePlayer1.width = 120
+
+
+        if (!interval) interval = setInterval(update1, 1000 / 75)
+    }
+    else if (selectPlayers === 2) {
+        frames = 0
+        cuadrosPS = 0
+
+        keys = []
+        generatedCoins = []
+        generatedBulletsUp = []
+        score1 = 0
+        score2 = 0
+        damage1 = 3
+        damage2 = 3
+        enter = 0
+
+        lifePlayer1.image.src = images.flame3
+        lifePlayer1.width = 120
+
+        lifePlayer2.image.src = images.flame3
+        lifePlayer2.width = 120
+
+        if (!interval) interval = setInterval(update, 1000 / 75)
+    }
+
+}
+
+function update1() {
+
+    frames++
+    cuadrosPS++
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    board.draw()
+    tower.draw()
+    drawCoins(frames, cuadrosPS)
+    drawBullet(frames)
+    player1.draw()
+    nubes.draw()
+    lifePlayer1.draw()
+
+    ctx.font = "bold 100px VT323"
+    ctx.fillStyle = 'rgb(18, 35, 196)'
+    ctx.fillText("SCORE: " + score1, 100, 150)
+
+
+    ctx.font = "bolder 50px VT323"
+    ctx.fillStyle = '#5c6cff'
+    ctx.fillText("life: ", 100, 200)
+
+
+    movementCharacter()
+    gettingCoinPlayer1()
+
+    smashedPlayer1()
+    if (frames > 8000) gameOver1()
 }
 
 function update() {
 
     frames++
     cuadrosPS++
-
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     board.draw()
     tower.draw()
@@ -311,6 +404,7 @@ function update() {
     gettingCoinPlayer2()
     smashedPlayer1()
     smashedPlayer2()
+    if (frames > 8000) gameOver()
 
 }
 
@@ -323,36 +417,54 @@ function gameOver() {
     ctx.fillText("GAME OVER", canvas.width / 2 - 550, canvas.height / 2)
     ctx.font = "bold 80px VT323"
     ctx.fillStyle = "white"
-    ctx.fillText("Presiona 'ENTER' para reiniciar",100,800)
+    ctx.fillText("Presiona 'ENTER' para reiniciar", 100, 800)
 
     if (damage1 === 0) {
-        console.log("jugador 2 gana")
+
 
         ctx.fillStyle = "white"
         ctx.font = "bold 100px VT323"
-        ctx.fillText("JUGADOR 2 GANA", 350,600)
+        ctx.fillText("JUGADOR 2 GANA", 350, 600)
 
     } else if (damage2 === 0) {
-        console.log("jugador 1 gana")
+        
 
         ctx.fillStyle = "white"
-        ctx.font = "bold 40px VT323"
-        ctx.fillText("JUGADOR 1 GANA", 500,600)
+        ctx.font = "bold 100px VT323"
+        ctx.fillText("JUGADOR 1 GANA", 350, 600)
 
     } else if (score1 < score2) {
-        console.log("jugador 2 gana")
 
         ctx.fillStyle = "white"
-        ctx.font = "bold 40px VT323"
-        ctx.fillText("JUGADOR 2 GANA", 500,600)
+        ctx.font = "bold 100px VT323"
+        ctx.fillText("JUGADOR 2 GANA", 350, 600)
 
     } else if (score1 > score2) {
-        console.log("jugador 1 gana")
+        
 
         ctx.fillStyle = "white"
-        ctx.font = "bold 40px VT323"
-        ctx.fillText("JUGADOR 1 GANA", 500,600)
+        ctx.font = "bold 100px VT323"
+        ctx.fillText("JUGADOR 1 GANA", 350, 600)
     }
+
+
+}
+
+function gameOver1() {
+    clearInterval(interval)
+    interval = null
+
+    ctx.font = "bolder 300px VT323"
+    ctx.fillStyle = "#a0d100"
+    ctx.fillText("GAME OVER", canvas.width / 2 - 550, canvas.height / 2)
+    ctx.font = "bold 80px VT323"
+    ctx.fillStyle = "white"
+    ctx.fillText("Presiona 'ENTER' para reiniciar", 100, 800)
+
+
+    ctx.fillStyle = "white"
+    ctx.font = "bold 100px VT323"
+    ctx.fillText("TU SCORE ES: " + score1, 350, 600)
 
 
 }
@@ -412,7 +524,7 @@ function Coins(coinX) {
 
 function generateCoins(frames, cuadrosPS) {
 
-    if (frames % 70 === 0) {
+    if (frames % 50 === 0) {
         var coinX = Math.floor(Math.random() * canvas.width - 100)
         if (coinX > board.x + 20) {
             generatedCoins.push(new Coins(coinX, cuadrosPS))
@@ -449,7 +561,7 @@ function Bullets(bulletX) {
 
 function generateBullet(frames) {
 
-    if (frames % 150 === 0) {
+    if (frames % 100 === 0) {
         var bulletX = Math.floor(Math.random() * canvas.width - 100)
         if (bulletX > board.x) {
             generatedBulletsUp.push(new Bullets(bulletX))
@@ -462,6 +574,7 @@ function drawBullet(frames) {
 
     generateBullet(frames)
     generatedBulletsUp.forEach(function (bullet) {
+        canyon.play()
         bullet.draw()
     })
 }
@@ -481,6 +594,8 @@ function drawCover() {
 
     }
 }
+
+
 
 //-------------LISTENERS
 
@@ -576,9 +691,36 @@ document.body.addEventListener("keyup", function (e) {
     keys[e.keyCode] = false;
 });
 
+
 document.body.addEventListener("keyup", function (e) {
-    if (e.keyCode == 13) start()
+    if (e.keyCode === 13) {
+        enter++
+        if (enter === 1) {
+            if (selectPlayers === undefined) {
+                alert("Debes seleccionar al menos un jugador")
+                enter--
+            } else if (selectPlayers === 1 || selectPlayers === 2) {
+                drawCover()
+                fondoSound.play()
+                document.getElementById("canvas").style.display = "block"
+                document.getElementById("maxDiv").style.display = "none"
+            }
+        } else if (enter === 2) {
+            start()
+        }
+    }
 })
+
+document.getElementById("jugador1").addEventListener("click", function () {
+    arrayPlayers.push(1)
+    selectPlayers = arrayPlayers[arrayPlayers.length - 1]
+})
+
+document.getElementById("jugador2").addEventListener("click", function () {
+    arrayPlayers.push(2)
+    selectPlayers = arrayPlayers[arrayPlayers.length - 1]
+})
+
 
 
 //TESTERS

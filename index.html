@@ -1,16 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>RAMON</title>
+    <title>DRAGOADVENTURES</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
 </head>
-<body>
-<div><canvas id="canvas" width="1280" height="920"></canvas></div>
 
-   <script src="main.js"></script> 
+<body>
+    <div id="maxDiv">
+        <img id="titulo" src="./images/cooltext305797487990378.png" alt="titulo">
+        <div id="instrucciones">
+            <h1>INSTRUCCIONES</h1>
+            <p>
+                -RECOLECTA LAS MONEDAS<br>
+                -ESQUIVA LAS BALAS<br>
+                -RESISTE TODO LO QUE PUEDAS<br>
+                <br><br>Jugador 1
+            </p>
+            <img src="./images/teclasarrows2.png" alt="arrows">
+
+        </div>
+        <div id="secondPlayer">
+            <p>
+                <br>SELECCIONA LOS JUGADORES<br>
+                <button id="jugador1" class="botones">1 JUGADOR</button>
+                <button id="jugador2" class="botones">2 JUGADORES</button><br>
+                <button id="startGamebutton">PRESIONA "ENTER" PARA COMENZAR</button>
+                <br><br>Jugador 2
+            </p>
+            <img src="./images/teclasawsd2.png" alt="arrows">
+        </div>
+    </div>
+    <div><canvas id="canvas" width="1280" height="920"></canvas></div>
+
+    <script src="main.js"></script>
 </body>
+
 </html>
